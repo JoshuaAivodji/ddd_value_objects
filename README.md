@@ -9,10 +9,10 @@ A collection of reusable Value Objects for Domain-Driven Design (DDD) in Flutter
 
 This package provides ready-to-use Value Objects with built-in validation, immutability, and proper equality:
 
-- ✅ **EmailAddress** - Email validation with RFC 5322 compliance
-- ✅ **Password** - Configurable password validation (strong, medium, weak presets)
-- ✅ **Name** - FirstName, LastName, and FullName with proper capitalization
-- ✅ **Age** - Age validation with customizable constraints
+-  **EmailAddress** - Email validation with RFC 5322 compliance
+-  **Password** - Configurable password validation (strong, medium, weak presets)
+-  **Name** - FirstName, LastName, and FullName with proper capitalization
+-  **Age** - Age validation with customizable constraints
 
 ### Core Features
 
