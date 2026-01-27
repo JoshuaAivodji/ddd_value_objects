@@ -149,4 +149,34 @@ class FailureMessages {
         return 'La valeur est en dessous du minimum (min: $minimum, actuel: $actualValue)';
     }
   }
+
+  // Messages for InvalidUrl
+  static String get invalidUrl {
+    switch (_currentLanguage) {
+      case Language.en:
+        return 'Invalid URL format';
+      case Language.fr:
+        return 'Format d\'URL invalide';
+    }
+  }
+
+  // Messages for MissingProtocol
+  static String get missingProtocol {
+    switch (_currentLanguage) {
+      case Language.en:
+        return 'URL must have a protocol (http:// or https://)';
+      case Language.fr:
+        return 'L\'URL doit avoir un protocole (http:// ou https://)';
+    }
+  }
+
+  // Messages for InvalidUsername
+  static String get invalidUsername {
+    switch (_currentLanguage) {
+      case Language.en:
+        return 'Username must contain only letters, numbers, and underscores';
+      case Language.fr:
+        return 'Le nom d\'utilisateur ne peut contenir que des lettres, chiffres et underscores';
+    }
+  }
 }

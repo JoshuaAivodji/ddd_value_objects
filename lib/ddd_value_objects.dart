@@ -9,6 +9,7 @@ export 'src/common/email_address.dart';
 export 'src/common/password.dart';
 export 'src/common/name.dart';
 export 'src/common/age.dart';
+export 'src/common/url.dart';
 
 // Re-export Either from dartz for convenience
 export 'package:dartz/dartz.dart' show Either, Left, Right, left, right;

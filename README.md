@@ -13,6 +13,9 @@ This package provides ready-to-use Value Objects with built-in validation, immut
 -  **Password** - Configurable password validation (strong, medium, weak presets)
 -  **Name** - FirstName, LastName, and FullName with proper capitalization
 -  **Age** - Age validation with customizable constraints
+-  **Url** - URL validation with protocol, domain, and path extraction
+-  **Username** - Username validation (alphanumeric + underscore)
+
 
 ### Core Features
 
@@ -44,10 +47,21 @@ import 'package:ddd_value_objects/ddd_value_objects.dart';
 // Valid email
 final email = EmailAddress('user@example.com');
 if (email.isValid) {
-  print(email.getOrCrash()); // "user@example.com"
-  print(email.domain); // "example.com"
-  print(email.localPart); // "user"
+print(email.getOrCrash()); // "user@example.com"
+print(email.domain); // "example.com"
+print(email.localPart); // "user"
 }
+
+// Check email type
+final personalEmail = EmailAddress('user@gmail.com');
+print(personalEmail.isBusinessEmail); // false
+
+final businessEmail = EmailAddress('contact@company.com');
+print(businessEmail.isBusinessEmail); // true
+
+// Detect disposable emails
+final disposableEmail = EmailAddress('temp@tempmail.com');
+print(disposableEmail.isDisposable); // true
 
 // Invalid email
 final invalidEmail = EmailAddress('not-an-email');
@@ -105,6 +119,10 @@ final fullNameFromParts = FullName.fromParts(
 );
 print(fullNameFromParts.getOrCrash()); // "Marie MARTIN"
 
+// New helpers
+print(fullName.initials); // "JD"
+print(fullName.sortName); // "DUPONT, Jean"
+
 // Supports international characters
 final accentedName = FirstName('josé');
 print(accentedName.getOrCrash()); // "José"
@@ -144,6 +162,63 @@ print(adult.category); // "adult" (18-64)
 
 final senior = Age(70);
 print(senior.category); // "senior" (>= 65)
+```
+
+### Url
+```dart
+// Valid URLs
+final url = Url('https://example.com');
+print(url.isValid); // true
+print(url.protocol); // "https"
+print(url.domain); // "example.com"
+print(url.path); // "/"
+print(url.isSecure); // true
+
+// URL with path and query parameters
+final complexUrl = Url('https://api.example.com:8080/users?page=1&limit=10#section');
+print(complexUrl.domain); // "api.example.com"
+print(complexUrl.port); // 8080
+print(complexUrl.path); // "/users"
+print(complexUrl.queryParameters); // {"page": "1", "limit": "10"}
+print(complexUrl.fragment); // "section"
+print(complexUrl.hasQueryParameters); // true
+
+// Invalid URLs
+final invalidUrl = Url('example.com'); // Missing protocol
+print(invalidUrl.isValid); // false
+print(invalidUrl.failureOrNull?.message); // "URL must have a protocol..."
+
+final httpUrl = Url('http://example.com');
+print(httpUrl.isSecure); // false (not HTTPS)
+```
+
+### Username
+```dart
+// Valid username
+final username = Username('john_doe');
+print(username.isValid); // true
+print(username.getOrCrash()); // "john_doe" (normalized to lowercase)
+
+// Automatic normalization
+final upperUsername = Username('JohnDoe123');
+print(upperUsername.getOrCrash()); // "johndoe123"
+
+// Check username characteristics
+print(username.hasUnderscore); // true
+print(username.hasDigit); // false
+print(username.isAlphaOnly); // false
+print(username.length); // 8
+
+// Custom constraints
+final shortUsername = Username('ab', minLength: 2); // Valid
+final longUsername = Username('verylongusername', maxLength: 10); // Invalid
+
+// Invalid usernames
+final invalidUsername = Username('john doe'); // Contains space
+print(invalidUsername.isValid); // false
+
+final specialChars = Username('john@doe'); // Special characters
+print(specialChars.isValid); // false
 ```
 
 ## Internationalization (i18n)
@@ -197,6 +272,9 @@ The package includes these common validation failures:
 - `TooLong` - Value is too long
 - `InvalidFormat` - Invalid format
 - `InvalidEmail` - Invalid email format
+- `InvalidUrl` - Invalid URL format
+- `MissingProtocol` - URL missing protocol
+- `InvalidUsername` - Invalid username format
 - `NoUpperCase` - Missing uppercase letter
 - `NoLowerCase` - Missing lowercase letter
 - `NoDigit` - Missing digit

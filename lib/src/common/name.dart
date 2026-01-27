@@ -175,4 +175,26 @@ class FullName extends ValueObject<String> {
       return parts.length > 1 ? parts.skip(1).join(' ') : null;
     });
   }
+
+  String? get initials {
+    return value.fold((_) => null, (name) {
+      final parts = name.split(' ').where((part) => part.isNotEmpty);
+      if (parts.isEmpty) return null;
+
+      return parts.map((part) => part[0].toUpperCase()).join();
+    });
+  }
+
+  String? get sortName {
+    return value.fold((_) => null, (name) {
+      final parts = name.split(' ').where((part) => part.isNotEmpty).toList();
+      if (parts.isEmpty) return null;
+      if (parts.length == 1) return parts[0];
+
+      final firstName = parts.first;
+      final lastName = parts.skip(1).join(' ');
+
+      return '$lastName, $firstName';
+    });
+  }
 }

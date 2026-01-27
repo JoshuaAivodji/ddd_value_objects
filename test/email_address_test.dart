@@ -241,4 +241,108 @@ void main() {
       });
     });
   });
+
+  group('Helper methods - isDisposable and isBusinessEmail', () {
+    test('should detect disposable email domains', () {
+      // Arrange
+      final emails = [
+        EmailAddress('test@tempmail.com'),
+        EmailAddress('user@10minutemail.com'),
+        EmailAddress('fake@mailinator.com'),
+        EmailAddress('temp@guerrillamail.com'),
+      ];
+
+      // Assert
+      for (final email in emails) {
+        expect(
+          email.isDisposable,
+          true,
+          reason: '${email.domain} should be disposable',
+        );
+      }
+    });
+
+    test('should not detect regular emails as disposable', () {
+      // Arrange
+      final emails = [
+        EmailAddress('test@gmail.com'),
+        EmailAddress('user@company.com'),
+        EmailAddress('admin@mycorp.io'),
+      ];
+
+      // Assert
+      for (final email in emails) {
+        expect(
+          email.isDisposable,
+          false,
+          reason: '${email.domain} should not be disposable',
+        );
+      }
+    });
+
+    test('should return false for disposable check on invalid email', () {
+      // Arrange
+      final email = EmailAddress('invalid-email');
+
+      // Assert
+      expect(email.isDisposable, false);
+    });
+
+    test('should detect personal email domains', () {
+      // Arrange
+      final emails = [
+        EmailAddress('test@gmail.com'),
+        EmailAddress('user@yahoo.com'),
+        EmailAddress('admin@hotmail.com'),
+        EmailAddress('contact@outlook.com'),
+        EmailAddress('hello@icloud.com'),
+      ];
+
+      // Assert
+      for (final email in emails) {
+        expect(
+          email.isBusinessEmail,
+          false,
+          reason: '${email.domain} should be personal',
+        );
+      }
+    });
+
+    test('should detect business email domains', () {
+      // Arrange
+      final emails = [
+        EmailAddress('contact@mycompany.com'),
+        EmailAddress('info@startup.io'),
+        EmailAddress('admin@enterprise.net'),
+        EmailAddress('support@business.co'),
+      ];
+
+      // Assert
+      for (final email in emails) {
+        expect(
+          email.isBusinessEmail,
+          true,
+          reason: '${email.domain} should be business',
+        );
+      }
+    });
+
+    test('should handle case insensitivity for business email check', () {
+      // Arrange
+      final email1 = EmailAddress('test@GMAIL.COM');
+      final email2 = EmailAddress('test@Gmail.Com');
+
+      // Assert
+      expect(email1.isBusinessEmail, false);
+      expect(email2.isBusinessEmail, false);
+    });
+
+    test('should return false for business email check on invalid email', () {
+      // Arrange
+      final email = EmailAddress('invalid-email');
+
+      // Assert
+      expect(email.isBusinessEmail, false);
+    });
+  });
 }

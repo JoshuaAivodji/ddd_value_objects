@@ -128,3 +128,24 @@ class BelowMinimum extends ValueFailure {
   @override
   List<Object?> get props => [minimum, actualValue];
 }
+
+class InvalidUrl extends ValueFailure {
+  const InvalidUrl();
+
+  @override
+  String get message => FailureMessages.invalidUrl;
+}
+
+class MissingProtocol extends ValueFailure {
+  const MissingProtocol();
+
+  @override
+  String get message => FailureMessages.missingProtocol;
+}
+
+class InvalidUsername extends ValueFailure {
+  const InvalidUsername();
+
+  @override
+  String get message => FailureMessages.invalidUsername;
+}

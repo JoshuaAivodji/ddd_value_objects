@@ -1,6 +1,6 @@
 name: ddd_value_objects
 description: "A collection of reusable Value Objects for Domain-Driven Design in Flutter."
-version: 0.1.0
+version: 0.2.0
 homepage: https://github.com/JoshuaAivodji/ddd_value_objects
 repository: https://github.com/JoshuaAivodji/ddd_value_objects
 issue_tracker: https://github.com/JoshuaAivodji/ddd_value_objects/issues

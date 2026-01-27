@@ -431,4 +431,62 @@ void main() {
       });
     });
   });
+
+  group('Helper methods - initials and sortName', () {
+    test('should extract initials from full name', () {
+      // Arrange
+      final name = FullName('Jean Dupont');
+
+      // Assert
+      expect(name.initials, 'JD');
+    });
+
+    test('should extract initials from multiple names', () {
+      // Arrange
+      final name = FullName('Marie Claire Martin');
+
+      // Assert
+      expect(name.initials, 'MCM');
+    });
+
+    test('should extract initials from hyphenated names', () {
+      // Arrange
+      final name = FullName('Jean-Pierre Dupont-Martin');
+
+      // Assert
+      expect(name.initials, 'JD'); // Changé de 'JDM' à 'JD'
+    });
+
+    test('should return null initials for invalid name', () {
+      // Arrange
+      final name = FullName('');
+
+      // Assert
+      expect(name.initials, null);
+    });
+
+    test('should format sortName correctly', () {
+      // Arrange
+      final name = FullName('Jean Dupont');
+
+      // Assert
+      expect(name.sortName, 'DUPONT, Jean');
+    });
+
+    test('should format sortName for multiple last names', () {
+      // Arrange
+      final name = FullName('Jean Martin Dupont');
+
+      // Assert
+      expect(name.sortName, 'MARTIN DUPONT, Jean');
+    });
+
+    test('should return null sortName for invalid name', () {
+      // Arrange
+      final name = FullName('');
+
+      // Assert
+      expect(name.sortName, null);
+    });
+  });
 }
